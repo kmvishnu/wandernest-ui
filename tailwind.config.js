@@ -60,12 +60,11 @@ export default {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			},
-				'black-blue': '#0d1b2a',
-				'dark-blue': '#1b263b',
-				'blue-slate': '#415a77',
-				'grey-blue': '#778da9',
-				'cream-white': '#e0e1dd',
-			  
+  			'black-blue': '#0d1b2a',
+  			'dark-blue': '#1b263b',
+  			'blue-slate': '#415a77',
+  			'grey-blue': '#778da9',
+  			'cream-white': '#e0e1dd'
   		}
   	}
   },

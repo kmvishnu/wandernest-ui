@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useNavigate } from "react-router-dom"
 
 export function TeamSwitcher({
   teams,
@@ -22,6 +23,7 @@ export function TeamSwitcher({
   }[]
 }) {
   const [activeTeam] = React.useState(teams[0])
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -31,6 +33,7 @@ export function TeamSwitcher({
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              onClick={()=>navigate("/")}
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <activeTeam.logo className="size-4" />

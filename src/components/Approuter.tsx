@@ -3,14 +3,17 @@ import {
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from "react-router-dom";
 import LoginComponent from "./LoginComponent/LoginComponent";
 import RegisterComponent from "./RegisterComponent/RegisterComponent";
 import Home from "./Home/Home";
 import { useAuth } from "@/hooks/useAuth";
+import HotelDetailsComponent from "./Home/HotelDetailsComponent";
 
-const PrivateRoute = ({ children }: any) => {
-  const { isAuthenticated } = useAuth(); // Check if user is logged in
+// Private Route Wrapper
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated } = useAuth();
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
@@ -19,7 +22,9 @@ const AppRouter = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginComponent />} />
-        <Route path="register" element={<RegisterComponent />} />
+        <Route path="/register" element={<RegisterComponent />} />
+
+        {/* Protected Routes */}
         <Route
           path="/"
           element={
@@ -27,7 +32,10 @@ const AppRouter = () => {
               <Home />
             </PrivateRoute>
           }
-        />
+        >
+          <Route path="hotel/:id" element={<HotelDetailsComponent />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

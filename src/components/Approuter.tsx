@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  Outlet,
 } from "react-router-dom";
 import LoginComponent from "./LoginComponent/LoginComponent";
 import RegisterComponent from "./RegisterComponent/RegisterComponent";

@@ -2,8 +2,6 @@
 
 import * as React from "react"
 import {
-  BookOpen,
-  Bot,
   Frame,
   Compass,
   Map,

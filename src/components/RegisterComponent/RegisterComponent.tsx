@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import InputField from "../Common/InputField.tsx";
 import { useNavigate } from "react-router-dom";
 import { COPYRIGHT, COPYRIGHT_URL } from "../../../config";
-import { useLogin, useRegister } from "@/hooks/useAuth.ts";
+import { useRegister } from "@/hooks/useAuth.ts";
 
 interface RegisterFormInputs {
   name: string;
@@ -16,7 +16,6 @@ interface RegisterFormInputs {
 
 const RegisterComponent: React.FC = () => {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   
 
@@ -44,7 +43,6 @@ const RegisterComponent: React.FC = () => {
   const { mutate: registerUser, isPending, isError, error } = useRegister();
 
   const onSubmit = (data: RegisterFormInputs) => {
-    setIsSubmitting(true);
 
     registerUser(
       { email: data.email, name: data.name, password: data.password },

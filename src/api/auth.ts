@@ -1,5 +1,5 @@
-import axios from "axios";
-import { API_URL } from "../../config";
+// import axios from "axios";
+// import { API_URL } from "../../config";
 import { RegisterResponse } from "@/hooks/useAuth";
 
 export interface LoginRequest {
@@ -30,19 +30,20 @@ export interface LoginResponse {
   };
 }
 
-const api = axios.create({
-  baseURL: API_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+// const api = axios.create({
+//   baseURL: API_URL,
+//   withCredentials: true,
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
 
 // Update your login function to use this instance
 export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
   // const response = await api.post<LoginResponse>("/login", data);
   // return response.data;
-  return new Promise((resolve,reject) => {
+  console.log(data)
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ status: "success", token: "token 2333", user: { id: "1", name: "John Doe", email: "test@gmail.com"}});
       // reject({ message: "Invalid email or password" });
@@ -53,7 +54,8 @@ export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
 export const registerApi = async (data: RegisterRequest): Promise<RegisterResponse> => {
   // const response = await api.post<RegisterResponse>("/register", data);
   // return response.data;
-  return new Promise((resolve,reject) => {
+  console.log(data)
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ status: "success", message: "User registered successfully" });
     }, 2000);

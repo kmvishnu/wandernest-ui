@@ -5,7 +5,10 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import InputField from "../Common/InputField.tsx";
 import { COPYRIGHT, COPYRIGHT_URL } from "../../../config";
-import { useLogin } from "@/hooks/useLogin.ts";
+import { useLogin } from "@/hooks/useAuth.ts";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/slices/authSlice.ts";
+
 
 interface LoginFormInputs {
   email: string;
@@ -14,6 +17,8 @@ interface LoginFormInputs {
 
 const LoginComponent: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -33,10 +38,15 @@ const LoginComponent: React.FC = () => {
     mode: "onChange",
   });
 
-  const { mutate: login, isPending, error } = useLogin();
+  const { mutate: loginFunction, isPending, isError, error } = useLogin();
 
   const onSubmit = (data: LoginFormInputs) => {
-    login(data);
+    loginFunction(data, {
+      onSuccess: ( data) => {
+        dispatch(login(data));
+        navigate("/");
+      },
+    });
   };
 
   return (
@@ -76,12 +86,30 @@ const LoginComponent: React.FC = () => {
           </button>
         </form>
 
-        {error && (
-          <p className="text-red-500 text-center my-4">
-            {error.response?.data?.message ||
-              error.message ||
-              "An error occurred during login"}
-          </p>
+        {isError && (
+          <div className="my-4 p-4 rounded-md bg-red-50 border border-red-200">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-5 w-5 text-red-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-7h2v2h-2zm0-4h2v4h-2z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-red-700">
+                  {error?.message || "An error occurred. Please try again."}
+                </p>
+              </div>
+            </div>
+          </div>
         )}
 
         <div className="mt-4 text-center flex justify-between">

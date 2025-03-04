@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../../config";
+import { RegisterResponse } from "@/hooks/useAuth";
 
 export interface LoginRequest {
   email: string;
@@ -15,21 +16,12 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  otp: string;
 }
 
-export interface verifyForgotPasswordOtpRequest {
-  email: string;
-  otp: string;
-  newPassword: string;
-}
 
-export interface SendOtpResponse {
-  status: string;
-  message: string;
-}
 
 export interface LoginResponse {
+  status: string;
   token: string;
   user: {
     id: string;
@@ -47,22 +39,26 @@ const api = axios.create({
 });
 
 // Update your login function to use this instance
-export const login = async (data: LoginRequest): Promise<LoginResponse> => {
-  const response = await api.post<LoginResponse>("/login", data);
-  return response.data;
+export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
+  // const response = await api.post<LoginResponse>("/login", data);
+  // return response.data;
+  return new Promise((resolve,reject) => {
+    setTimeout(() => {
+      resolve({ status: "success", token: "token 2333", user: { id: "1", name: "John Doe", email: "test@gmail.com"}});
+      // reject({ message: "Invalid email or password" });
+    }, 2000);
+  });
 };
 
-export const sendOtp = async (data: OtpRequest): Promise<SendOtpResponse> => {
-  const response = await api.post<SendOtpResponse>("/sendOtp", data);
-  return response.data;
+export const registerApi = async (data: RegisterRequest): Promise<RegisterResponse> => {
+  // const response = await api.post<RegisterResponse>("/register", data);
+  // return response.data;
+  return new Promise((resolve,reject) => {
+    setTimeout(() => {
+      resolve({ status: "success", message: "User registered successfully" });
+    }, 2000);
+  });
+  
 };
 
-export const verifyOtp = async (data: RegisterRequest): Promise<SendOtpResponse> => {
-  const response = await api.post<SendOtpResponse>("/verifyOtp", data);
-  return response.data;
-};
 
-export const verifyForgotPasswordOtp = async (data: verifyForgotPasswordOtpRequest): Promise<SendOtpResponse> => {
-  const response = await api.post<SendOtpResponse>("/verifyForgotPasswordOtp", data);
-  return response.data;
-};

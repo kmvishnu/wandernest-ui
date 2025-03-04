@@ -6,8 +6,8 @@ import {
 } from "react-router-dom";
 import LoginComponent from "./LoginComponent/LoginComponent";
 import RegisterComponent from "./RegisterComponent/RegisterComponent";
-import { useAuth } from "@/hooks/useAuth";
 import Home from "./Home/Home";
+import { useAuth } from "@/hooks/useAuth";
 
 const PrivateRoute = ({ children }: any) => {
   const { isAuthenticated } = useAuth(); // Check if user is logged in

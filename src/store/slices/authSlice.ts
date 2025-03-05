@@ -5,6 +5,7 @@ interface AuthState {
   token: string | null;
   userName: string | null;
   userEmail: string | null;
+  // userHotels: number[] | null;
 }
 
 const initialState: AuthState = {
@@ -12,6 +13,7 @@ const initialState: AuthState = {
   token: localStorage.getItem("authToken"),
   userName: null,
   userEmail: null,
+  // userHotels: null,
 };
 
 const authSlice = createSlice({
@@ -22,7 +24,8 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.token = action.payload.token;
       state.userName = action.payload.user.name;
-      state.userEmail = action.payload.user.email; 
+      state.userEmail = action.payload.user.email;
+      // state.userHotels = action.payload.user.hotels || null; 
       localStorage.setItem("authToken", action.payload.token);
      
     },
@@ -31,6 +34,7 @@ const authSlice = createSlice({
       state.token = null;
       state.userName = null;
       state.userEmail = null; 
+      // state.userHotels = null;
       localStorage.removeItem("authToken");
     },
   },

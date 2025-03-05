@@ -27,6 +27,7 @@ export interface LoginResponse {
     id: string;
     name: string;
     email: string;
+    // hotels: number[] | null;
   };
 }
 
@@ -45,7 +46,7 @@ export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
   console.log(data)
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve({ status: "success", token: "token 2333", user: { id: "1", name: "John Doe", email: "test@gmail.com"}});
+      resolve({ status: "success", token: "token 2333", user: { id: "1", name: "John Doe", email: "test@gmail.com"} });
       // reject({ message: "Invalid email or password" });
     }, 2000);
   });

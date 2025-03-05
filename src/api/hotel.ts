@@ -60,3 +60,22 @@ export interface MemberDetails {
       }, 2000);
     });
   };
+  
+  export const createBookingApi = async (data: { members: MemberDetails[], checkinDate: string, checkoutDate: string }): Promise<void> => {
+   console.log("ddd",data)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("Booking createdd:", data);
+        resolve();
+      }, 1000);
+    });
+  };
+  
+  export const createCheckInApi = async (data: { members: MemberDetails[] }): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("Check-in created:", data);
+        resolve();
+      }, 1000);
+    });
+  };

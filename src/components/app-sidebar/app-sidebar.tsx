@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Frame,
   Compass,
@@ -8,18 +8,18 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-} from "lucide-react"
-
-import { NavMain } from "@/components/navigation/nav-main"
-import { NavUser } from "@/components/navigation/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher/team-switcher"
+} from "lucide-react";
+import { NavMain } from "@/components/navigation/nav-main";
+import { NavUser } from "@/components/navigation/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { useNavigate } from "react-router-dom";
 
 // This is sample data.
 const data = {
@@ -34,39 +34,14 @@ const data = {
       logo: Compass,
       plan: "Enterprise",
     },
-    // {
-    //   name: "Acme Corp.",
-    //   logo: AudioWaveform,
-    //   plan: "Startup",
-    // },
-    // {
-    //   name: "Evil Corp.",
-    //   logo: Command,
-    //   plan: "Free",
-    // },
   ],
   navMain: [
     {
       title: "Bookings",
-      url: "#",
+      url: "/bookings",
       icon: SquareTerminal,
       isActive: true,
-      // items: [
-      //   {
-      //     title: "History",
-      //     url: "#",
-      //   },
-      //   {
-      //     title: "Starred",
-      //     url: "#",
-      //   },
-      //   {
-      //     title: "Settings",
-      //     url: "#",
-      //   },
-      // ],
     },
-   
     {
       title: "Settings",
       url: "#",
@@ -108,9 +83,23 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
-export function AppSidebar({ isCollapsed, onCollapse, ...props }: { isCollapsed: boolean, onCollapse: () => void } & React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  isCollapsed,
+  onCollapse,
+  ...props
+}: {
+  isCollapsed: boolean;
+  onCollapse: () => void;
+} & React.ComponentProps<typeof Sidebar>) {
+  const navigate = useNavigate();
+
+  const handleNavClick = (url: string) => {
+    navigate(url);
+    onCollapse(); // Collapse the sidebar when an item is clicked
+  };
+
   return (
     <Sidebar
       collapsible={isCollapsed ? "icon" : undefined} // Ensure correct type
@@ -121,7 +110,7 @@ export function AppSidebar({ isCollapsed, onCollapse, ...props }: { isCollapsed:
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} onItemClick={handleNavClick} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
@@ -130,4 +119,3 @@ export function AppSidebar({ isCollapsed, onCollapse, ...props }: { isCollapsed:
     </Sidebar>
   );
 }
-

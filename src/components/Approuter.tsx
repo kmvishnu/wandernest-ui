@@ -9,6 +9,7 @@ import RegisterComponent from "./RegisterComponent/RegisterComponent";
 import Home from "./Home/Home";
 import { useAuth } from "@/hooks/useAuth";
 import HotelDetailsComponent from "./Home/HotelDetailsComponent";
+import BookingsComponent from "./Hotel/BookingsComponent";
 
 // Private Route Wrapper
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -32,6 +33,7 @@ const AppRouter = () => {
           }
         >
           <Route path="hotel/:id" element={<HotelDetailsComponent />} />
+          <Route path="bookings" element={<BookingsComponent />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />

@@ -20,6 +20,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 // This is sample data.
 const data = {
@@ -94,6 +96,7 @@ export function AppSidebar({
   onCollapse: () => void;
 } & React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
+  const auth = useSelector((state: RootState) => state.auth);
 
   const handleNavClick = (url: string) => {
     navigate(url);
@@ -113,7 +116,13 @@ export function AppSidebar({
         <NavMain items={data.navMain} onItemClick={handleNavClick} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser
+          user={{
+            name: auth.userName || "",
+            email: auth.userEmail || "",
+            avatar: "/avatars/shadcn.jpg",
+          }}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

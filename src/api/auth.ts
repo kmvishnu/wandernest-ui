@@ -1,5 +1,5 @@
-// import axios from "axios";
-// import { API_URL } from "../../config";
+import axios from "axios";
+import { API_URL } from "../../config";
 import { RegisterResponse } from "@/hooks/useAuth";
 
 export interface LoginRequest {
@@ -31,25 +31,25 @@ export interface LoginResponse {
   };
 }
 
-// const api = axios.create({
-//   baseURL: API_URL,
-//   withCredentials: true,
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
+const api = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 // Update your login function to use this instance
 export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
-  // const response = await api.post<LoginResponse>("/login", data);
-  // return response.data;
-  console.log(data)
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ status: "success", token: "token 2333", user: { id: "1", name: "John Doe", email: "test@gmail.com"} });
-      // reject({ message: "Invalid email or password" });
-    }, 2000);
-  });
+  const response = await api.post<LoginResponse>("/login", data);
+  return response.data;
+  // console.log(data)
+  // return new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     resolve({ status: "success", token: "token 2333", user: { id: "1", name: "John Doe", email: "test@gmail.com"} });
+  //     // reject({ message: "Invalid email or password" });
+  //   }, 2000);
+  // });
 };
 
 export const registerApi = async (data: RegisterRequest): Promise<RegisterResponse> => {

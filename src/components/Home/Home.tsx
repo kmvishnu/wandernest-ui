@@ -8,7 +8,7 @@ import { useHotels } from "@/hooks/useHotels";
 export default function Home() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: hotels, isLoading, isError } = useHotels();
+  const { data, isLoading, isError } = useHotels();
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
@@ -40,14 +40,14 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Error Screen */}
+              
                 {isError && (
                   <div className="flex flex-col items-center justify-center h-60 text-red-500 text-lg font-semibold">
                     ❌ Failed to load hotels. Please try again later.
                   </div>
                 )}
 
-                {/* Loading Skeleton */}
+                
                 {isLoading ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {Array.from({ length: 4 }).map((_, index) => (
@@ -68,14 +68,14 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {hotels?.data.map((hotel) => (
+                    {data?.hotels.map((hotel) => (
                       <div
                         key={hotel.id}
                         className="relative h-60 rounded-xl shadow-lg overflow-hidden cursor-pointer transition-transform transform hover:scale-105"
                         onClick={() => navigate(`/hotel/${hotel.id}`)}
                       >
                         <img
-                          src={hotel.image}
+                          src={hotel.imageUrls[0]}
                           alt={hotel.name}
                           className="w-full h-full object-cover rounded-xl"
                         />

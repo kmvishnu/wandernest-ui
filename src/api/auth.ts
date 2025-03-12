@@ -1,5 +1,4 @@
-import axios from "axios";
-import { API_URL } from "../../config";
+import apiClient from "./apiClient";
 import { RegisterResponse } from "@/hooks/useAuth";
 
 export interface LoginRequest {
@@ -18,8 +17,6 @@ export interface RegisterRequest {
   password: string;
 }
 
-
-
 export interface LoginResponse {
   status: string;
   token: string;
@@ -31,17 +28,9 @@ export interface LoginResponse {
   };
 }
 
-const api = axios.create({
-  baseURL: API_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
 // Update your login function to use this instance
 export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
-  const response = await api.post<LoginResponse>("/login", data);
+  const response = await apiClient.post<LoginResponse>("/login", data);
   return response.data;
   // console.log(data)
   // return new Promise((resolve) => {
@@ -53,7 +42,7 @@ export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
 };
 
 export const registerApi = async (data: RegisterRequest): Promise<RegisterResponse> => {
-  // const response = await api.post<RegisterResponse>("/register", data);
+  // const response = await apiClient.post<RegisterResponse>("/register", data);
   // return response.data;
   console.log(data)
   return new Promise((resolve) => {
@@ -61,7 +50,4 @@ export const registerApi = async (data: RegisterRequest): Promise<RegisterRespon
       resolve({ status: "success", message: "User registered successfully" });
     }, 2000);
   });
-  
 };
-
-

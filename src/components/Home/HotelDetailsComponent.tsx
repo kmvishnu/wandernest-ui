@@ -17,7 +17,7 @@ export default function HotelDetailsComponent() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showCheckInModal, setShowCheckInModal] = useState(false);
 
-  const hotel = hotelsData?.data.find((hotel) => hotel.id === id);
+  const hotel = hotelsData?.hotels.find((hotel) => hotel.id === id);
 
   useEffect(() => {
     if (bookingsData?.bookings) {
@@ -68,9 +68,9 @@ export default function HotelDetailsComponent() {
       <ToastContainer />
       <div className="flex flex-col items-center lg:items-start lg:w-2/3">
         <h1 className="text-2xl font-bold">{hotel.name}</h1>
-        <img src={hotel.image} alt={hotel.name} className="w-full max-w-lg rounded-lg" />
+        <img src={hotel.imageUrls[0]} alt={hotel.name} className="w-full max-w-lg rounded-lg" />
         <p className="text-lg">📍 Location: {hotel.location}</p>
-        <p className="text-lg">💰 Price: ${hotel.price} per night</p>
+        <p className="text-lg">💰 Price: {hotel.price} per night</p>
         <div className="flex flex-col lg:flex-row gap-4 mt-4 lg:mt-8 w-full lg:w-auto hidden md:block">
           <button
             className="bg-black text-white py-2 px-4 rounded-lg w-full lg:w-auto"
@@ -88,7 +88,7 @@ export default function HotelDetailsComponent() {
         </div>
       </div>
       <div className="flex flex-col items-center lg:items-start lg:w-1/3 lg:pl-4">
-        <p className="text-lg mt-4 lg:mt-0">Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque leo nec orci fermentum, a tincidunt nulla facilisis. Integer nec libero nec nulla facilisis tincidunt.</p>
+        <p className="text-lg mt-4 lg:mt-0">Description: {hotel.description}</p>
         <p className="text-lg mt-4">Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque leo nec orci fermentum, a tincidunt nulla facilLorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque leo nec orci fermentum, a tincidunt nulla facilisis. Integer nec libero nec nulla facilisis tincLorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque leo nec orci fermentum, a tincidunt nulla facilisis. Integer nec libero nec nulla facilisis tincisis. Integer nec libero nec nulla facilisis tincidunt.</p>
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-around lg:hidden">

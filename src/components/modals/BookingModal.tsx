@@ -49,7 +49,9 @@ export default function BookingModal({ hotelName, price, onClose, onSubmit }: Bo
       return;
     }
     setError(null);
-    onSubmit(members, checkinDate, checkoutDate);
+    const formattedCheckinDate = new Date(checkinDate).toISOString();
+    const formattedCheckoutDate = new Date(checkoutDate).toISOString();
+    onSubmit(members, formattedCheckinDate, formattedCheckoutDate);
   };
 
   return (

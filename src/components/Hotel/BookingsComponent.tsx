@@ -13,6 +13,15 @@ export default function BookingsComponent() {
     return <p className="text-center text-lg">No bookings found!</p>;
   }
 
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Bookings</h1>
@@ -24,13 +33,18 @@ export default function BookingsComponent() {
             onClick={() => handleBookingClick(booking.hotelId)}
           >
             <img
-              src={`/images/hotels/${booking.hotelId}.jpg`}
+              src={booking.hotel.imageUrls[0]}
               alt={booking.hotelName}
               className="w-full h-40 object-cover rounded-lg mb-2"
             />
             <h2 className="text-xl font-bold">{booking.hotelName}</h2>
-            <p className="text-gray-600">Check-in: {booking.checkInDate}</p>
-            <p className="text-gray-600">Check-out: {booking.checkOutDate}</p>
+            <p className="text-gray-600">
+              <span className="font-bold text-base">Check-in: </span>
+              {formatDate(booking.checkInDate)}
+            </p>
+            <p className="text-gray-600">
+            <span className="font-bold text-base">Check-out: </span>{formatDate(booking.checkOutDate)}
+            </p>
           </div>
         ))}
       </div>

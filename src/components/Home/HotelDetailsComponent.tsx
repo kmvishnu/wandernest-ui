@@ -31,7 +31,7 @@ export default function HotelDetailsComponent() {
 
   const handleBookingSubmit = (members:any, checkinDate:any, checkoutDate:any) => {
     createBooking.mutate(
-      { members, checkinDate, checkoutDate },
+      { members, checkinDate, checkoutDate, hotelId: hotel?.id||"", hotelName: hotel?.name || "" },
       {
         onSuccess: () => {
           toast.success("Booking successful!");
@@ -116,7 +116,7 @@ export default function HotelDetailsComponent() {
       )}
       {showCheckInModal && (
         <CheckInModal
-          members={bookingsData?.bookings.find((booking) => booking.hotelId === id)?.memberDetails || []}
+          members={bookingsData?.bookings.find((booking) => booking.hotelId === id)?.members || []}
           onClose={() => setShowCheckInModal(false)}
           onSubmit={handleCheckInSubmit}
         />

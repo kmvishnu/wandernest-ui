@@ -17,12 +17,32 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
+// Public Route Wrapper
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Navigate to="/" replace /> : children;
+};
+
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginComponent />} />
-        <Route path="/register" element={<RegisterComponent />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginComponent />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <RegisterComponent />
+            </PublicRoute>
+          }
+        />
 
         <Route
           path="/"

@@ -29,8 +29,8 @@ export default function BookingsComponent() {
               className="w-full h-40 object-cover rounded-lg mb-2"
             />
             <h2 className="text-xl font-bold">{booking.hotelName}</h2>
-            <p className="text-gray-600">Check-in: {booking.checkinDate}</p>
-            <p className="text-gray-600">Check-out: {booking.checkoutDate}</p>
+            <p className="text-gray-600">Check-in: {booking.checkInDate}</p>
+            <p className="text-gray-600">Check-out: {booking.checkOutDate}</p>
           </div>
         ))}
       </div>

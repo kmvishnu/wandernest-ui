@@ -2,23 +2,20 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { HotelResponse } from "@/types/type";
 import { getHotels } from "@/api/public";
-import { BookingDetails, getBookedHotels } from "@/api/hotel";
+import { BookingDetails, getBookedHotels, MemberDetails } from "@/api/hotel";
 import { createBookingApi, createCheckInApi } from "@/api/hotel";
 
-interface Member {
-  name: string;
-  age: number;
-  adhar: string | null;
-}
 
 interface CreateBookingData {
-  members: Member[];
+  members: MemberDetails[];
   checkinDate: string;
   checkoutDate: string;
+  hotelId: string;
+  hotelName: string;
 }
 
 interface CreateCheckInData {
-  members: Member[];
+  members: MemberDetails[];
 }
 
 export function useHotels() {

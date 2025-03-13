@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { HotelResponse } from "@/types/type";
 import { getHotels } from "@/api/public";
-import { BookingDetails, BookingResponse, cancelBookingApi, getBookedHotels, MemberDetails } from "@/api/hotel";
+import { BookingDetails, BookingResponse, cancelBookingApi, CheckInResponse, getBookedHotels, MemberDetails } from "@/api/hotel";
 import { createBookingApi, createCheckInApi } from "@/api/hotel";
 
 interface CreateBookingData {
@@ -13,7 +13,8 @@ interface CreateBookingData {
   hotelName: string;
 }
 
-interface CreateCheckInData {
+export interface CreateCheckInData {
+  bookingId: string;
   members: MemberDetails[];
 }
 
@@ -58,7 +59,7 @@ export const useCancelBooking = () => {
 };
 
 export const useCreateCheckIn = () => {
-  return useMutation<void, AxiosError, CreateCheckInData>({
+  return useMutation<CheckInResponse, AxiosError, CreateCheckInData>({
     mutationFn: createCheckInApi,
     onSuccess: (data) => {
       console.log("Check-in successful:", data);

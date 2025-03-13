@@ -1,3 +1,4 @@
+import { CreateCheckInData } from "@/hooks/useHotels";
 import apiClient from "./apiClient";
 
 export interface MemberDetails {
@@ -39,9 +40,29 @@ export interface BookingDetails {
   status: string;
   bookings: Booking[];
 }
+
 export interface BookingResponse {
   status: string;
   bookings: Booking;
+}
+
+export interface CheckInMember {
+  id: string;
+  checkInId: string;
+  name: string;
+  age: number;
+  aadhar: string;
+}
+
+export interface CheckIn {
+  id: string;
+  bookingId: string;
+  members: CheckInMember[];
+}
+
+export interface CheckInResponse {
+  status: string;
+  checkIn: CheckIn;
 }
 
 export const getBookedHotels = async (): Promise<BookingDetails> => {
@@ -61,11 +82,7 @@ export const cancelBookingApi = async (bookingId: string): Promise<BookingDetail
   return response.data;
 };
 
-export const createCheckInApi = async (data: { members: MemberDetails[] }): Promise<void> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log("Check-in created:", data);
-      resolve();
-    }, 1000);
-  });
+export const createCheckInApi = async (data: CreateCheckInData): Promise<CheckInResponse> => {
+  const response = await apiClient.post<CheckInResponse>("/addCheckIn", data);
+  return response.data;
 };

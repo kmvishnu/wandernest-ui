@@ -12,6 +12,7 @@ import CheckInModal from "../modals/CheckInModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useQueryClient } from "@tanstack/react-query";
+import { CheckCircle, IndianRupee, MapPinCheckInside } from "lucide-react"; // Import the checkmark icon
 
 export default function HotelDetailsComponent() {
   const { id } = useParams();
@@ -64,18 +65,23 @@ export default function HotelDetailsComponent() {
   };
 
   const handleCheckInSubmit = (members: any) => {
-    createCheckIn.mutate(
-      { members },
-      {
-        onSuccess: () => {
-          toast.success("Check-in successful!");
-          setShowCheckInModal(false);
-        },
-        onError: () => {
-          toast.error("Check-in failed!");
-        },
-      }
+    const booking = bookingsData?.bookings.find(
+      (booking) => booking.hotelId === id
     );
+    if (booking) {
+      createCheckIn.mutate(
+        { bookingId: booking.id, members },
+        {
+          onSuccess: () => {
+            toast.success("Check-in successful!");
+            setShowCheckInModal(false);
+          },
+          onError: () => {
+            toast.error("Check-in failed!");
+          },
+        }
+      );
+    }
   };
 
   const handleCancelBooking = () => {
@@ -104,19 +110,30 @@ export default function HotelDetailsComponent() {
   return (
     <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 p-4">
       <ToastContainer />
-      <div className="flex flex-col items-center lg:items-start lg:w-2/3">
-        <h1 className="text-2xl font-bold">{hotel.name}</h1>
-        <img
-          src={hotel.imageUrls[0]}
-          alt={hotel.name}
-          className="w-full max-w-lg rounded-lg"
-        />
-        <p className="text-lg">📍 Location: {hotel.location}</p>
-        <p className="text-lg">💰 Price: {hotel.price} per night</p>
-        <div className="flex flex-col lg:flex-row gap-4 mt-4 lg:mt-8 w-full lg:w-auto hidden md:block">
+      <div className="flex flex-col gap-2 items-center justify-center lg:items-start lg:w-2/3">
+        <h1 className="text-2xl font-bold w-full text-center">{hotel.name}</h1>
+        <div className="w-full flex justify-center ">
+          <img
+            src={hotel.imageUrls[0]}
+            alt={hotel.name}
+            className="w-full max-w-lg rounded-lg"
+          />
+        </div>
+
+        <p className="text-lg w-full flex justify-center">
+          {" "}
+          <MapPinCheckInside className="inline-block mr-2" size={20} />{" "}
+          Location: {hotel.location}
+        </p>
+        <p className="text-lg w-full flex justify-center">
+          <IndianRupee className="inline-block mr-2" size={20} /> Price:{" "}
+          {hotel.price} per night
+        </p>
+
+        <div className="hidden md:flex flex-col lg:flex-row mt-4 lg:mt-8 w-full gap-4">
           {!isBooked && (
             <button
-              className="bg-black text-white py-2 px-4 rounded-lg w-full lg:w-auto"
+              className="bg-black text-white py-2 px-4 rounded-lg w-[70%]"
               onClick={() => setShowBookingModal(true)}
             >
               Book Now
@@ -125,22 +142,33 @@ export default function HotelDetailsComponent() {
 
           {isBooked && (
             <button
-              className="bg-red-500 text-white py-2 px-4 rounded-lg w-full lg:w-auto"
+              className="bg-black text-white py-2 px-4 rounded-lg w-[70%]"
               onClick={() => setShowCancelDialog(true)}
             >
               Cancel Booking
             </button>
           )}
 
-          {isBooked && !isCheckedIn && (
+          {isBooked && (
             <button
-              className="bg-black text-white py-2 px-4 rounded-lg w-full lg:w-auto"
+              className={`py-2 px-4 rounded-lg w-[70%] ${
+                isCheckedIn
+                  ? "bg-gray-300 text-black cursor-not-allowed"
+                  : "bg-black text-white"
+              }`}
               onClick={() => setShowCheckInModal(true)}
+              disabled={isCheckedIn}
             >
-              Check In
+              {isCheckedIn ? (
+                <>
+                  <CheckCircle className="inline-block mr-2" size={20} />
+                  Checked In
+                </>
+              ) : (
+                "Check In"
+              )}
             </button>
           )}
-
         </div>
       </div>
       <div className="flex flex-col items-center lg:items-start lg:w-1/3 lg:pl-4">
@@ -156,10 +184,10 @@ export default function HotelDetailsComponent() {
           facilisis tincisis. Integer nec libero nec nulla facilisis tincidunt.
         </p>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-around lg:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-white p-4 flex gap-3 justify-around md:hidden">
         {!isBooked && (
           <button
-            className="bg-black text-white py-2 px-4 rounded-lg w-full lg:w-auto"
+            className="bg-black text-white py-2 px-4 rounded-lg w-full"
             onClick={() => setShowBookingModal(true)}
           >
             Book Now
@@ -168,19 +196,31 @@ export default function HotelDetailsComponent() {
 
         {isBooked && (
           <button
-            className="bg-red-500 text-white py-2 px-4 rounded-lg w-full lg:w-auto"
+            className="bg-black text-white py-2 px-4 rounded-lg w-full"
             onClick={() => setShowCancelDialog(true)}
           >
             Cancel Booking
           </button>
         )}
 
-        {isBooked && !isCheckedIn && (
+        {isBooked && (
           <button
-            className="bg-black text-white py-2 px-4 rounded-lg w-full lg:w-auto"
+            className={`py-2 px-4 rounded-lg w-full ${
+              isCheckedIn
+                ? "bg-gray-300 text-black cursor-not-allowed"
+                : "bg-black text-white"
+            }`}
             onClick={() => setShowCheckInModal(true)}
+            disabled={isCheckedIn}
           >
-            Check In
+            {isCheckedIn ? (
+              <>
+                <CheckCircle className="inline-block mr-2" size={20} />
+                Checked In
+              </>
+            ) : (
+              "Check In"
+            )}
           </button>
         )}
       </div>
@@ -216,7 +256,7 @@ export default function HotelDetailsComponent() {
                 No
               </button>
               <button
-                className="bg-red-500 text-white py-2 px-4 rounded-lg"
+                className="bg-black text-white py-2 px-4 rounded-lg"
                 onClick={handleCancelBooking}
               >
                 Yes

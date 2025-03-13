@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useBookings } from "@/hooks/useHotels";
+import { CheckCircle } from "lucide-react";
 
 export default function BookingsComponent() {
   const { data: bookingsData, isLoading, isError, error } = useBookings();
@@ -40,7 +41,9 @@ export default function BookingsComponent() {
     return (
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Your Bookings</h1>
-        <p className="text-center text-lg text-red-500">Error: {error.message}</p>
+        <p className="text-center text-lg text-red-500">
+          Error: {error.message}
+        </p>
       </div>
     );
   }
@@ -64,7 +67,16 @@ export default function BookingsComponent() {
               alt={booking.hotelName}
               className="w-full h-40 object-cover rounded-lg mb-2"
             />
-            <h2 className="text-xl font-bold">{booking.hotelName}</h2>
+            <div className="flex justify-between">
+              <h2 className="text-xl font-bold">{booking.hotelName}</h2>
+              {booking.isCheckedIn && (
+                <span className="py-2 px-3 rounded-full w-auto bg-gray-300 text-black cursor-pointer">
+                  <CheckCircle className="inline-block mr-2" size={20} />
+                  Checked In
+                </span>
+              )}
+            </div>
+
             <p className="text-gray-600">
               <span className="font-bold text-base">Check-in: </span>
               {formatDate(booking.checkInDate)}

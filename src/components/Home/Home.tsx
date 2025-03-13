@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen">
+      <div className="flex h-screen w-full">
         {/* Sidebar with collapse control */}
         <AppSidebar
           isCollapsed={isSidebarCollapsed}
@@ -40,14 +40,12 @@ export default function Home() {
                   />
                 </div>
 
-              
                 {isError && (
                   <div className="flex flex-col items-center justify-center h-60 text-red-500 text-lg font-semibold">
                     ❌ Failed to load hotels. Please try again later.
                   </div>
                 )}
 
-                
                 {isLoading ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {Array.from({ length: 4 }).map((_, index) => (

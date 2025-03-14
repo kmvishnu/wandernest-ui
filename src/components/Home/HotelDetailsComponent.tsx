@@ -13,15 +13,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, IndianRupee, MapPinCheckInside } from "lucide-react"; // Import the checkmark icon
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function HotelDetailsComponent() {
   const { id } = useParams();
   const { data: hotelsData } = useHotels();
   const { data: bookingsData } = useBookings();
   const queryClient = useQueryClient();
-  const createBooking = useCreateBooking();
-  const createCheckIn = useCreateCheckIn();
-  const cancelBooking = useCancelBooking();
+  const { mutate: createBooking, isPending: isBookingLoading } = useCreateBooking();
+  const { mutate: createCheckIn, isPending: isCheckInPending } = useCreateCheckIn();
+  const { mutate: cancelBooking, isPending: isCancelPending } = useCancelBooking();
   const [isBooked, setIsBooked] = useState(false);
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
@@ -43,7 +44,7 @@ export default function HotelDetailsComponent() {
   }, [bookingsData, id]);
 
   const handleBookingSubmit = (members: any, checkIn: any, checkOut: any) => {
-    createBooking.mutate(
+    createBooking(
       {
         members,
         checkIn,
@@ -69,11 +70,12 @@ export default function HotelDetailsComponent() {
       (booking) => booking.hotelId === id
     );
     if (booking) {
-      createCheckIn.mutate(
+      createCheckIn(
         { bookingId: booking.id, members },
         {
           onSuccess: () => {
             toast.success("Check-in successful!");
+            queryClient.invalidateQueries({ queryKey: ["bookings"] });
             setShowCheckInModal(false);
           },
           onError: () => {
@@ -89,7 +91,7 @@ export default function HotelDetailsComponent() {
       (booking) => booking.hotelId === id
     );
     if (booking) {
-      cancelBooking.mutate(booking.id, {
+      cancelBooking(booking.id, {
         onSuccess: () => {
           toast.success("Booking cancelled successfully!");
           setIsBooked(false);
@@ -133,7 +135,7 @@ export default function HotelDetailsComponent() {
         <div className="hidden md:flex flex-col lg:flex-row mt-4 lg:mt-8 w-full gap-4">
           {!isBooked && (
             <button
-              className="bg-black text-white py-2 px-4 rounded-lg w-[70%]"
+              className="bg-black text-white py-2 px-4 rounded-lg w-full"
               onClick={() => setShowBookingModal(true)}
             >
               Book Now
@@ -142,7 +144,7 @@ export default function HotelDetailsComponent() {
 
           {isBooked && (
             <button
-              className="bg-black text-white py-2 px-4 rounded-lg w-[70%]"
+              className="bg-black text-white py-2 px-4 rounded-lg w-full"
               onClick={() => setShowCancelDialog(true)}
             >
               Cancel Booking
@@ -151,7 +153,7 @@ export default function HotelDetailsComponent() {
 
           {isBooked && (
             <button
-              className={`py-2 px-4 rounded-lg w-[70%] ${
+              className={`py-2 px-4 rounded-lg w-full ${
                 isCheckedIn
                   ? "bg-gray-300 text-black cursor-not-allowed"
                   : "bg-black text-white"
@@ -229,6 +231,7 @@ export default function HotelDetailsComponent() {
           hotelName={hotel.name}
           price={hotel.price}
           onClose={() => setShowBookingModal(false)}
+          isLoading={isBookingLoading}
           onSubmit={handleBookingSubmit}
         />
       )}
@@ -240,6 +243,8 @@ export default function HotelDetailsComponent() {
           }
           onClose={() => setShowCheckInModal(false)}
           onSubmit={handleCheckInSubmit}
+          isLoading={isCheckInPending}
+
         />
       )}
       {showCancelDialog && (
@@ -248,7 +253,12 @@ export default function HotelDetailsComponent() {
             <p className="text-lg mb-4">
               Are you sure you want to cancel the booking?
             </p>
-            <div className="flex justify-end gap-4">
+            {isCancelPending ? ((
+            <div className="flex justify-center items-center">
+              <ClipLoader color="#000" loading={isCancelPending} size={35} />
+            </div>
+          )):
+            (<div className="flex justify-end gap-4">
               <button
                 className="bg-gray-300 text-black py-2 px-4 rounded-lg"
                 onClick={() => setShowCancelDialog(false)}
@@ -261,7 +271,7 @@ export default function HotelDetailsComponent() {
               >
                 Yes
               </button>
-            </div>
+            </div>)}
           </div>
         </div>
       )}

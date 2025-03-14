@@ -43,6 +43,7 @@ const LoginComponent: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue, // Add setValue from useForm
     formState: { errors },
   } = useForm<LoginFormInputs>({
     resolver: yupResolver(validationSchema),
@@ -61,13 +62,8 @@ const LoginComponent: React.FC = () => {
   };
 
   const fillTestCredentials = () => {
-    const emailInput = document.getElementById("email") as HTMLInputElement;
-    const passwordInput = document.getElementById("password") as HTMLInputElement;
-    
-    if (emailInput && passwordInput) {
-      emailInput.value = "test1@gmail.com";
-      passwordInput.value = "test";
-    }
+    setValue("email", "test1@gmail.com");
+    setValue("password", "test");
   };
 
   return (

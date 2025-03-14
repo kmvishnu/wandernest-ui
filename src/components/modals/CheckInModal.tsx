@@ -1,9 +1,11 @@
 import { MemberDetails } from "@/api/hotel";
 import { useState } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface CheckInModalProps {
   members: MemberDetails[];
   onClose: () => void;
+  isLoading: boolean;
   onSubmit: (members: MemberDetails[]) => void;
 }
 
@@ -11,6 +13,7 @@ export default function CheckInModal({
   members: initialMembers,
   onClose,
   onSubmit,
+  isLoading
 }: CheckInModalProps) {
   const [members, setMembers] = useState<MemberDetails[]>(initialMembers);
   const [errors, setErrors] = useState<string[]>(Array(initialMembers.length).fill(""));
@@ -62,18 +65,26 @@ export default function CheckInModal({
           ))}
         </div>
         <div className="flex flex-col gap-2">
-          <button
-            onClick={handleSubmit}
-            className="bg-black text-white py-2 px-4 rounded-lg w-full"
-          >
-            Submit
-          </button>
-          <button
-            onClick={onClose}
-            className="bg-gray-300 text-black py-2 px-4 rounded-lg w-full"
-          >
-            Close
-          </button>
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <ClipLoader color="#000" loading={isLoading} size={35} />
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={handleSubmit}
+                className="bg-black text-white py-2 px-4 rounded-lg w-full"
+              >
+                Submit
+              </button>
+              <button
+                onClick={onClose}
+                className="bg-gray-300 text-black py-2 px-4 rounded-lg w-full"
+              >
+                Close
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

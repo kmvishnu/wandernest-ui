@@ -6,7 +6,6 @@ import {
   Compass,
   Map,
   PieChart,
-  Settings2,
   SquareTerminal,
 } from "lucide-react";
 import { NavMain } from "@/components/navigation/nav-main";

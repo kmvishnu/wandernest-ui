@@ -10,7 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useNavigate } from "react-router-dom";
 
 export function TeamSwitcher({
   teams,
@@ -24,7 +23,6 @@ export function TeamSwitcher({
   onItemClick: (url: string) => void;
 }) {
   const [activeTeam] = React.useState(teams[0]);
-  const navigate = useNavigate();
 
   return (
     <SidebarMenu>

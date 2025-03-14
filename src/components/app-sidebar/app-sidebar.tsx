@@ -18,6 +18,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -44,29 +45,29 @@ const data = {
       icon: SquareTerminal,
       isActive: true,
     },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings2,
+    //   items: [
+    //     {
+    //       title: "General",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Team",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Billing",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Limits",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
   ],
   projects: [
     {
@@ -97,20 +98,23 @@ export function AppSidebar({
 } & React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
   const auth = useSelector((state: RootState) => state.auth);
+  const { isMobile, setOpenMobile } = useSidebar(); // Import this from the sidebar context
 
   const handleNavClick = (url: string) => {
     navigate(url);
-    onCollapse(); // Collapse the sidebar when an item is clicked
+    
+    // Handle both desktop and mobile sidebar states
+    if (isMobile) {
+      setOpenMobile(false);
+    } else {
+      onCollapse();
+    }
   };
 
   return (
-    <Sidebar
-      collapsible={isCollapsed ? "icon" : undefined} // Ensure correct type
-      className={`transition-all duration-300 ${isCollapsed ? "w-16" : "w-64"}`}
-      {...props}
-    >
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={data.teams} onItemClick={handleNavClick}/>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} onItemClick={handleNavClick} />

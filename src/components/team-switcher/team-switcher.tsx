@@ -1,28 +1,29 @@
-"use client"
+"use client";
 
-import * as React from "react"
-
+import * as React from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { useNavigate } from "react-router-dom"
+} from "@/components/ui/sidebar";
+import { useNavigate } from "react-router-dom";
 
 export function TeamSwitcher({
   teams,
+  onItemClick,
 }: {
   teams: {
-    name: string
-    logo: React.ElementType
-    plan: string
-  }[]
+    name: string;
+    logo: React.ElementType;
+    plan: string;
+  }[];
+  onItemClick: (url: string) => void;
 }) {
-  const [activeTeam] = React.useState(teams[0])
+  const [activeTeam] = React.useState(teams[0]);
   const navigate = useNavigate();
 
   return (
@@ -33,7 +34,7 @@ export function TeamSwitcher({
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              onClick={()=>navigate("/")}
+              onClick={() => onItemClick("/")} 
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <activeTeam.logo className="size-4" />
@@ -80,5 +81,5 @@ export function TeamSwitcher({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

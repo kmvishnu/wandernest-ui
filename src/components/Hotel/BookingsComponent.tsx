@@ -70,8 +70,8 @@ export default function BookingsComponent() {
             <div className="flex justify-between">
               <h2 className="text-xl font-bold">{booking.hotelName}</h2>
               {booking.isCheckedIn && (
-                <span className="py-2 px-3 rounded-full w-auto bg-gray-300 text-black cursor-pointer">
-                  <CheckCircle className="inline-block mr-2" size={20} />
+                <span className="py-2 px-3 rounded-full w-auto bg-gray-300 text-sm text-black cursor-pointer">
+                  <CheckCircle className="inline-block mr-2" size={15} />
                   Checked In
                 </span>
               )}

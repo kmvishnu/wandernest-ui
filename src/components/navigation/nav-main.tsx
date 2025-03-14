@@ -48,7 +48,10 @@ export function NavMain({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  onClick={() => onItemClick(item.url)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Stop event from bubbling
+                    onItemClick(item.url);
+                  }}
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
@@ -59,10 +62,13 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
+                      <SidebarMenuSubButton 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onItemClick(subItem.url);
+                        }}
+                      >
+                        <span>{subItem.title}</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

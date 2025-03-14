@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import InputField from "../Common/InputField.tsx";
-import { COPYRIGHT, COPYRIGHT_URL } from "../../../config";
+import { COPYRIGHT, COPYRIGHT_URL, API_URL } from "../../../config";
 import { useLogin } from "@/hooks/useAuth.ts";
 import { useDispatch } from "react-redux";
 import { login } from "@/store/slices/authSlice.ts";
-
 
 interface LoginFormInputs {
   email: string;
@@ -19,6 +18,10 @@ const LoginComponent: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const URL = API_URL.replace("/v1", "");
+    fetch(`${URL}/healthCheck`);
+  }, []);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -42,7 +45,7 @@ const LoginComponent: React.FC = () => {
 
   const onSubmit = (data: LoginFormInputs) => {
     loginFunction(data, {
-      onSuccess: ( data) => {
+      onSuccess: (data) => {
         dispatch(login(data));
         navigate("/");
       },

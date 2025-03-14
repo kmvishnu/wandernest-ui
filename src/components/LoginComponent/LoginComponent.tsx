@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -17,10 +17,18 @@ interface LoginFormInputs {
 const LoginComponent: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showTestCredentials, setShowTestCredentials] = useState(true);
 
   useEffect(() => {
     const URL = API_URL.replace("/v1", "");
     fetch(`${URL}/healthCheck`);
+    
+    // Hide test credentials after 5 seconds
+    const timer = setTimeout(() => {
+      setShowTestCredentials(false);
+    }, 10000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -50,6 +58,16 @@ const LoginComponent: React.FC = () => {
         navigate("/");
       },
     });
+  };
+
+  const fillTestCredentials = () => {
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const passwordInput = document.getElementById("password") as HTMLInputElement;
+    
+    if (emailInput && passwordInput) {
+      emailInput.value = "test1@gmail.com";
+      passwordInput.value = "test";
+    }
   };
 
   return (
@@ -125,11 +143,6 @@ const LoginComponent: React.FC = () => {
               Sign Up
             </button>
           </p>
-          {/* <p className="text-sm text-gray-600">
-            <a href="#" className="text-blue-500 hover:underline">
-              Forgot Password?
-            </a>
-          </p> */}
           <p className="text-sm text-gray-600">
             <button
               onClick={() => navigate("/forgot-password")}
@@ -139,6 +152,33 @@ const LoginComponent: React.FC = () => {
             </button>
           </p>
         </div>
+
+        {/* Test Credentials Section */}
+        {showTestCredentials && (
+          <div className="mt-6 mb-2 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-md animate-pulse transition-opacity duration-1500 ease-in-out">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-blue-700">Test Credentials</h3>
+                <div className="mt-1 text-sm text-blue-600">
+                  <p>Email: test1@gmail.com</p>
+                  <p>Password: test</p>
+                </div>
+                <button 
+                  onClick={fillTestCredentials}
+                  className="mt-1 px-2 py-1 text-xs text-white bg-blue-500 hover:bg-blue-600 rounded transition-colors"
+                >
+                  Auto-fill
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="mt-6 text-center text-sm text-gray-600">
           <p>
             <a
